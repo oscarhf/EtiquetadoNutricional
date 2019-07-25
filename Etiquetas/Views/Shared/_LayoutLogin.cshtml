@@ -1,0 +1,37 @@
+﻿
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>@ViewData["Title"] - Rotulado Nutricional </title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- Material Kit CSS -->
+    <link rel="stylesheet" href="~/css/material-dashboard.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <!-- jS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+
+</head>
+
+<body cz-shortcut-listen="true">
+    <div class="wrapper" style="background: url(/images/backlogin.png);background-color: white;">
+        <div class="row h-100 justify-content-center align-items-center">
+
+            @RenderBody()
+
+        </div>
+
+    </div>
+</body>
+
+
+@RenderSection("Scripts", required: false)
+</html>
+

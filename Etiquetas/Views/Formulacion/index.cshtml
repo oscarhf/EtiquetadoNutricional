@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "Formulacion";
+}
+
+@model List<Etiquetas.Models.Proximales>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title ">Fórmulas</h4>
+
+                </div>
+                <div class="card-body">
+
+                    @if (Model.Count() > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table">
+
+                                <thead class=" text-primary">
+                                    <tr>
+
+                                        <th>
+                                            Nombre
+                                        </th>
+
+                                        <th>
+                                            Acciones
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var proximales in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @proximales.Name
+                                            </td>
+
+                                            <td class="td-actions text-right">
+                                                <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Editar" onclick="editProximal(@proximales.Id)">
+                                                    <i class="material-icons">edit</i>
+                                                </button>
+
+                                                
+                                                    <button type="button" rel="tooltip" onclick="getEtiqueta(@proximales.Id);" class="btn btn-success btn-link btn-sm" data-original-title="Generar Etiqueta">
+                                                        <i class="material-icons">pageview</i>
+                                                    </button>
+                                                
+
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row justify-content-center align-items-center card-chart-pre">
+                            <div> Actualmente no tiene Asociadas Formulaciones/proximales </div>
+                        </div>
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-md-4">
+                                <div class="card card-chart" style="min-height: 208px;">
+                                    <div class="card-header card-header-success">
+                                        <div>
+                                            Crear Desde Formulacion
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <p class="card-category">
+                                            Crea una etiqueta apartir de la Formulacion de un producto, puedes elegir los ingredientes a usar
+                                        </p>
+                                    </div>
+                                    <div class="card-footer justify-content-center ">
+                                        <a href="/Formulacion/Create" class="btn btn-success">
+                                            Crear
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card card-chart" style="min-height: 208px;">
+                                    <div class="card-header card-header-warning">
+                                        <div>
+                                            Crear Desde Analisis Proximal
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-category">
+                                            Crea una etiqueta apartir del analisis proximal de un producto
+                                        </p>
+                                    </div>
+                                    <div class="card-footer justify-content-center ">
+                                        <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#exampleModalCenter">
+                                            Crear
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+<script>
+        function getEtiqueta(data) {
+            window.location.href = "/etiqueta?id=" + data;
+        }
+
+        function editProximal(id){
+            window.location.href = "/Proximal/EditView?id=" + id;
+        }
+
+</script>
+
+}
+
+@section ScriptsHead{
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+}

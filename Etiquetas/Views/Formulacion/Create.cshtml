@@ -1,0 +1,1223 @@
+﻿
+@{
+    ViewData["Title"] = "Crear formulación";
+}
+
+@model Etiquetas.ViewModels.FormulacionView
+
+<div class="card">
+
+    <div class="card-header card-header-success">
+
+
+        <input id="idFormula" type="hidden" name="id">
+
+        <div class="row">
+            <span class="col-3 labelcustom">Nombre</span>
+            <input id="nameFormula" class="col-8 effect-9" name="name" type="text" required>
+        </div>
+
+
+    </div>
+
+
+    <div class="card-body">
+
+
+        <div class="card card-chart">
+
+
+            <div class="card-body">
+                <div class="row">
+
+                    <span class="col-3 labelcustom">Buscar ingrediente</span>
+                    <input class="col-8 effect-9 inputCustom" id="search" type="text" placeholder="Ingrese aqui el nombre del ingrediente que desea agregar">
+                    <button type="button" rel="tooltip" data-original-title="Agregar Ingrediente personalizado" class="btn btn-success  btn-sm " style="padding: 7px 7px;margin-left: 10px;" onclick="newingrediente();"><i class="material-icons">add</i><div class="ripple-container"></div></button>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-5">
+                <div id="ingredientes-Vue">
+                    <div class="card card-chart" style="min-height: 268px;">
+                        <div class="card-header">
+                            <div>
+                                Ingredientes
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="listIngredientes">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-7">
+                <div class="card card-chart" style="min-height: 100px;">
+                    <div class="card-header">
+                        <div>
+                            Porcentaje de la fórmula
+                        </div>
+
+
+                    </div>
+                    <div class="card-body" id="porcentaje">
+                        <progress :value="porcentaje" max="100"></progress>
+                    </div>
+                </div>
+
+                <div class="card card-chart" style="min-height: 100px;">
+                    <form id="Form-porcion-Formualcion">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+
+                                <span class="col-5 labelcustom">Porcion</span>
+                                <select id="porcionesFormulacion" class="col-6 custom-select" name="porcionId"></select>
+                                <button type="button" rel="tooltip" data-original-title="Agregar Porcion no contemplada por la ley" class="btn btn-success  btn-sm " style="padding: 7px 7px;margin-left: 10px;" data-target="#Modal-Create-Porcion-User-Formulacion" data-toggle="modal"><i class="material-icons">add</i><div class="ripple-container"></div></button>
+
+                                <span class="col-5 labelcustom">Total producto</span>
+                                <input id="inputUnidadFormulacion" class="col-3 effect-9 inputCustom" name="porcionCantidad" type="number" min="0" step="0.1" required>
+                                <select id="SelectUnidadFormulacion" class="col-3 custom-select" name="porcionUnidad" data-unidad="g">
+                                    <option value="hg"> hg - Hectogramos </option>
+                                    <option value="dag"> dag - Decagramos </option>
+                                    <option value="g" selected>g - Gramos</option>
+                                    <option value="dg"> dg - Decigramos </option>
+                                    <option value="cg">cg - Decigramos </option>
+                                    <option value="mg">mg - Miligramos</option>
+                                    <option value="ug">µg - Microgramos</option>
+                                </select>
+
+                                <span class="col-5 labelcustom">Densidad</span>
+                                <input id="inputDencidadFormulacion" class="col-3 effect-9 inputCustom" name="densidad" type="number" min="0" step="0.1" disabled>
+                                <select id="SelectDencidadFormulacion" class="col-3 custom-select" name="densidadUnidad" data-unidad="g/cm3" disabled>
+                                    <option value="g/cm3" selected>g/cm^3</option>
+                                </select>
+
+                                <input id="PorcionRemplazoFormulacion" name="PorcionRemplazo" type="hidden">
+
+
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card-footer justify-content-end ">
+        <button type="button" class="btn btn-success" onclick="formulaPreProcess();">
+            Guardar y crear Etiquetado Nutricional
+        </button>
+    </div>
+
+
+
+    <div id="vue-modal">
+        <div class="modal fade" id="ModalIngredientes" tabindex="-1" role="dialog" aria-labelledby="ModalIngredientes" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{name}} - {{provedor}} </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class=" col-md-12">
+
+                                <div class="card">
+
+                                    <div class="card-header card-header-tabs card-header-success">
+                                        <div class="nav-tabs-navigation">
+                                            <div class="nav-tabs-wrapper">
+
+                                                <ul class="nav nav-tabs" data-tabs="tabs">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" href="#general" data-toggle="tab">
+                                                            <i class="material-icons">blur_on</i>General
+                                                            <div class="ripple-container"></div>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#vitaminas" data-toggle="tab">
+                                                            <i class="material-icons">colorize</i> Vitaminas
+                                                            <div class="ripple-container"></div>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#minerales" data-toggle="tab">
+                                                            <i class="material-icons">scatter_plot</i> Minerales
+                                                            <div class="ripple-container"></div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="general">
+                                                <div class="row">
+                                                    <div v-if="calorias != null" class="col-6">
+                                                        Calorías {{calorias}} cal
+                                                    </div>
+
+                                                    <div v-if="azucar != null" class="col-6">
+                                                        Azúcar {{azucar}} g
+                                                    </div>
+
+                                                    <div v-if="agua != null" class="col-6">
+                                                        Agua {{agua}} g
+                                                    </div>
+
+                                                    <div v-if="proteinas != null" class="col-6">
+                                                        Proteínas {{proteinas}} g
+                                                    </div>
+
+                                                    <div v-if="grasa != null" class="col-6">
+                                                        Grasa {{grasa}} g
+                                                    </div>
+
+                                                    <div v-if="grasaSaturada != null" class="col-6">
+                                                        Grasa saturada {{grasaSaturada}} g
+                                                    </div>
+
+                                                    <div v-if="carbohidratos != null" class="col-6">
+                                                        Carbohidratos {{carbohidratos}} g
+                                                    </div>
+
+                                                    <div v-if="fibraDietetica != null" class="col-6">
+                                                        Fibra dietetica {{fibraDietetica}} g
+                                                    </div>
+
+
+                                                    <div v-if="cenizas != null" class="col-6">
+                                                        Cenizas {{cenizas}} Gramos
+                                                    </div>
+
+                                                    <div v-if="grasaTrans != null" class="col-6">
+                                                        Grasa trans {{grasaTrans}} g
+                                                    </div>
+
+                                                    <div v-if="colesterol != null" class="col-6">
+                                                        Colesterol {{colesterol}} g
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="vitaminas">
+                                                <div class="row">
+                                                    <div v-if="va != null" class="col-6">
+                                                        Vitamina A {{va}} µg
+                                                    </div>
+
+                                                    <div v-if="vb1 != null" class="col-6">
+                                                        Vitamina B1 {{vb1}} mg
+                                                    </div>
+
+                                                    <div v-if="vb2 != null" class="col-6">
+                                                        Vitamina B2 {{vb2}} mg
+                                                    </div>
+
+                                                    <div v-if="vb3 != null" class="col-6">
+                                                        Vitamina B3 {{vb3}} mg
+                                                    </div>
+
+                                                    <div v-if="vb5 != null" class="col-6">
+                                                        Vitamina B5 {{vb5}} mg
+
+                                                    </div>
+
+                                                    <div v-if="vb7 != null" class="col-6">
+                                                        Vitamina B7 {{vb7}} mg
+                                                    </div>
+
+                                                    <div v-if="vb9 != null" class="col-6">
+                                                        Vitamina B9 {{vb9}}  µg
+                                                    </div>
+
+                                                    <div v-if="vb12 != null" class="col-6">
+                                                        Vitamina B12 {{vb12}}  µg
+                                                    </div>
+
+                                                    <div v-if="vc != null" class="col-6">
+                                                        Vitamina C {{vc}} mg
+                                                    </div>
+
+                                                    <div v-if="vd != null" class="col-6">
+                                                        Vitamina D {{vd}}  µg
+                                                    </div>
+
+                                                    <div v-if="ve != null" class="col-6">
+                                                        Vitamina E {{ve}} mg
+                                                    </div>
+
+                                                    <div v-if="vk != null" class="col-6">
+                                                        Vitamina K {{vk}}  µg
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="minerales">
+                                                <div class="row">
+                                                    <div v-if="calcio != null" class="col-6">
+                                                        Calcio {{calcio}} mg
+                                                    </div>
+                                                    <div v-if="cloruro != ''" class="col-6">
+                                                        Cloruro {{cloruro}} mg
+                                                    </div>
+                                                    <div v-if="cobre != null" class="col-6">
+                                                        Cobre {{cobre}} mg
+                                                    </div>
+                                                    <div v-if="cromo != null" class="col-6">
+                                                        Cromo {{cromo}} µg
+                                                    </div>
+
+
+                                                    <div v-if="fosforo != null" class="col-6">
+                                                        Fósforo {{fosforo}} mg
+                                                    </div>
+
+                                                    <div v-if="fluor != null" class="col-6">
+                                                        Flúor {{fluor}} mg
+                                                    </div>
+
+
+                                                    <div v-if="hierro != null" class="col-6">
+                                                        Hierro {{hierro}} mg
+                                                    </div>
+
+
+                                                    <div v-if="magnesio != null" class="col-6">
+                                                        Magnesio {{magnesio}} mg
+                                                    </div>
+
+                                                    <div v-if="manganeso != null" class="col-6">
+                                                        Manganeso {{manganeso}} mg
+                                                    </div>
+
+                                                    <div v-if="molibdeno != null" class="col-6">
+                                                        Molibdeno {{molibdeno}} µg
+                                                    </div>
+
+                                                    <div v-if="selenio != null" class="col-6">
+                                                        Selenio {{selenio}}  µg
+                                                    </div>
+                                                    <div v-if="sodio != null" class="col-6">
+                                                        Sodio {{sodio}} mg
+                                                    </div>
+                                                    <div v-if="potasio != null" class="col-6">
+                                                        Potasio {{potasio}} mg
+                                                    </div>
+                                                    <div v-if="yodo" class="col-6">
+                                                        Yodo {{yodo}} µg
+                                                    </div>
+
+                                                    <div v-if="zinc != null" class="col-6">
+                                                        Zinc {{zinc}} mg
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" @@click="edit()">Personalizar</button>
+                            <button type="button" class="btn btn-success" @@click="add()"> Usar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div id="request-Formulacion" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div id="request-Formulacion-title"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center">
+
+                        <div class="col-12">
+                            <div id="request-Formulacion-quest"></div>
+                        </div>
+
+                        <h4 class="col-5 labelcustom">Valor</h4>
+                        <input id="request-Formulacion-quest-input" class="col-3 effect-9 inputCustom" name="porcionCantidad" type="number" min="0" step="0.1" required>
+                        <select id="SelectFormulacionModal" class="col-3 custom-select" name="porcionUnidad" data-unidad="g">
+                            <option value="g" selected>g - Gramos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="RequestFormulacionValidate();">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="Modal-Create-Porcion-User-Formulacion" class="modal fade">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>Crear Porcion</div>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="Modal-Create-Porcion-User-Form-Formulacion">
+                        <div class="row align-items-center">
+
+                            <div class="col-12">
+                                **El valor de esta porcion solo estare disponible para usted, siempre podra encontrarlo en la categoria "Mis Porciones"
+                            </div>
+
+                            <div class="col-12">
+                                <br />
+                            </div>
+
+                            <div class="col-5">
+                                Nombre
+                            </div>
+
+                            <input id="Modal-Create-Porcion-User-Name-Formulacion" class="col-6 inputCustom" name="name">
+
+                            <div class="col-5 labelcustom">Valor</div>
+                            <input id="Modal-Create-Porcion-User-Cantidad-Formulacion" class="col-3 inputCustom" name="porcionCantidad" type="number" min="0" step="0.1" required>
+                            <select id="Modal-Create-Porcion-User-Unidad-Formulacion" class="col-3 custom-select" name="porcionUnidad">
+                                <option value="g" selected>g - Gramos</option>
+                                <option value="ml">ml - Mililitros</option>
+                                <option value="taza">Taza</option>
+                                <option value="vaso">Vaso</option>
+                                <option value="cda">cda - Cucharada</option>
+                                <option value="cdta">Cdta - Cucharadira</option>
+                                <option value="Oz">Onza</option>
+                                <option value="OzFl">Onza Fluida</option>
+
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="ModalCreatePorcionUserlValidateFormulacion();">Aceptar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div id="ModalQuestFormlacion" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div id="ModalQuestFormlacion-title"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center">
+
+                        <div class="col-12">
+                            <div id="ModalQuestFormlacion-quest"></div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="saveFormula();">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="Crearingrediente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <form id="ingredienteForm">
+            <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row row-modal-title  align-items-center">
+                            <span class="col-1 labelcustom">Nombre</span>
+                            <input class="col-8 effect-9 inputCustom" name="name" type="text" required>
+
+                        </div>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row row-modal-head ">
+                            <div class=" col-md-12">
+                                <div class="row  align-items-center">
+                                    <div class="col-6 row-modal-title  align-items-center">
+                                        <div class="row">
+                                            <span class="col-4 labelcustom">provedor</span>
+                                            <input class="col-8 effect-9 inputCustom" name="provedor" type="text" required>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-6 row-modal-title  align-items-center">
+                                        <div class="row">
+                                            <span class="col-4 labelcustom">Tamaño Muestra</span>
+                                            <input id="nivel" class="col-4 effect-9 inputCustom" name="nivel" type="number" min="0" value="100" required step="0.1">
+                                            <select class="col-4 custom-select masa" data-name="nivel" data-unidad="g" name="nivelUnidad">
+                                                <option value="hg"> hg - Hectogramos </option>
+                                                <option value="dag"> dag - Decagramos </option>
+                                                <option value="g" selected>g - Gramos</option>
+                                                <option value="dg"> dg - Decigramos </option>
+                                                <option value="cg">cg - Decigramos </option>
+                                                <option value="mg">mg - Miligramos</option>
+                                                <option value="ug">µg - Microgramos</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <input id="idIngrediente" name="id" type="hidden">
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div class="card-header card-header-tabs card-header-success">
+                                <div class="nav-tabs-navigation">
+                                    <div class="nav-tabs-wrapper">
+                                        <span class="nav-tabs-title">Tasks:</span>
+                                        <ul class="nav nav-tabs" data-tabs="tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" href="#profile" data-toggle="tab">
+                                                    <i class="material-icons">blur_on</i> General
+                                                    <div class="ripple-container"></div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#settings" data-toggle="tab">
+                                                    <i class="material-icons">colorize</i> Vitaminas
+                                                    <div class="ripple-container"></div>
+                                                </a>
+                                            </li>
+
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#min" data-toggle="tab">
+                                                    <i class="material-icons">scatter_plot</i> Minerales
+                                                    <div class="ripple-container"></div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="profile">
+                                        <div class="row row-modal">
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Calorias</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="calorias" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select energia" data-name="calorias" data-unidad="cal" name="caloriasUnidad">
+                                                        <option value="cal" selected>cal - Calorias</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row  align-items-center">
+                                                    <span class="col-6 labelcustom">Azucar</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="azucar" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="azucar" data-unidad="g" name="azucarUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row  align-items-center">
+                                                    <span class="col-6 labelcustom">Agua</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="agua" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select liquido" data-name="agua" data-unidad="ml" name="aguaUnidad">
+                                                        <option value="ml" selected>ml - Militros</option>
+                                                        <option value="g"> g - Gramos</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row  align-items-center">
+                                                    <span class="col-6 labelcustom">Proteinas</span>
+                                                    <input class="col-3 effect-9  inputCustom" name="proteinas" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="proteinas" data-unidad="g" name="proteinasUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row  align-items-center">
+                                                    <span class="col-6 labelcustom">Grasa</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="grasa" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="grasa" data-unidad="g" name="grasaUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Grasa Saturada</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="grasaS" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="grasaS" data-unidad="g" name="grasaSUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Carbohidratos</span>
+                                                    <input class="col-3 effect-9  inputCustom" name="carbohidratos" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="carbohidratos" data-unidad="g" name="carbohidratosUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Fibra Dietetica</span>
+                                                    <input class="col-3 effect-9  inputCustom" name="fibraDietetica" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="fibraDietetica" data-unidad="g" name="fibraDieteticaUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Cenizas</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="cenizas" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="cenizas" data-unidad="g" name="cenizasUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Grasa Trans</span>
+                                                    <input class="col-3 effect-9  inputCustom" name="grasaTrans" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="grasaTrans" data-unidad="g" name="grasaTransUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g" selected>g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Colesterol</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="colesterol" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="colesterol" data-unidad="mg" name="colesterolUnidad">
+                                                        <option value="hg"> hg - Hectogramos </option>
+                                                        <option value="dag"> dag - Decagramos </option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg"> dg - Decigramos </option>
+                                                        <option value="cg">cg - Decigramos </option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Sodio</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="sodio" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="sodio" data-unidad="mg" name="sodioUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="settings">
+                                        <div class="row row-modal">
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina A</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="va" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="va" data-unidad="µg" name="vaUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina B1</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vb1" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vb1" data-unidad="µg" name="vb1Unidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina B2</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vb2" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vb2" data-unidad="µg" name="vb2Unidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina B3</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vb3" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vb3" data-unidad="µg" name="vb3Unidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row">
+                                                    <span class="col-6 labelcustom">Vitamina B5</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vb5" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vb5" data-unidad="µg" name="vb5Unidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina B7</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vb7" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vb7" data-unidad="µg" name="vb7Unidad">
+
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina B9</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vb9" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vb9" data-unidad="µg" name="vb9Unidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 ">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina B12</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vb12" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vb12" data-unidad="µg" name="vb12Unidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina C</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vc" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vc" data-unidad="µg" name="vcUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina D</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vd" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vd" data-unidad="µg" name="vdUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina E</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="ve" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="ve" data-unidad="µg" name="veUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Vitamina K</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="vk" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="vk" data-unidad="µg" name="vkUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="min">
+                                        <div class="row row-modal">
+
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Calcio</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="calcio" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="calcio" data-unidad="mg" name="calcioUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Cobre</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="cobre" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="cobre" data-unidad="mg" name="cobreUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Cromo</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="cromo" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="cromo" data-unidad="µg" name="cromoUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Cloro</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="cloruro" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="Cloruro" data-unidad="µg" name="cloruroUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Fosforo</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="fosforo" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="fosforo" data-unidad="mg" name="fosforoUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Fluor</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="fluor" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="fluor" data-unidad="mg" name="fluorUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Hierro</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="hierro" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="hierro" data-unidad="mg" name="hierroUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Magnesio</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="magnesio" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="magnesio" data-unidad="mg" name="magnesioUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Molibdeno</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="Molibdeno" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="Molibdeno" data-unidad="µg" name="MolibdenoUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Manganeso</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="manganeso" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="manganeso" data-unidad="mg" name="manganesoUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Potasio</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="potasio" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="potasio" data-unidad="mg" name="potasioUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Selenio</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="selenio" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="selenio" data-unidad="µg" name="selenioUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Yodo</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="yodo" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="yodo" data-unidad="µg" name="yodoUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg">mg - Miligramos</option>
+                                                        <option value="ug" selected>µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <div class="row align-items-center">
+                                                    <span class="col-6 labelcustom">Zinc</span>
+                                                    <input class="col-3 effect-9 inputCustom" name="zinc" type="number" min="0" step="0.000001">
+                                                    <select class="col-3 custom-select masa" data-name="zinc" data-unidad="mg" name="zincUnidad">
+                                                        <option value="hg">hg - Hectogramos</option>
+                                                        <option value="dag">dag - Decagramos</option>
+                                                        <option value="g">g - Gramos</option>
+                                                        <option value="dg">dg - Decigramos</option>
+                                                        <option value="cg">cg - Decigramos</option>
+                                                        <option value="mg" selected>mg - Miligramos</option>
+                                                        <option value="ug">µg - Microgramos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-success" onclick="saveIngrediente();">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+    @section ScriptsHead{
+        <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+        <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+        <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+                integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    }
+
+    @section Scripts{
+
+        <script src="~/js/EtiquetasJS/FormulacionCreate.js"></script>
+        <script src="~/js/EtiquetasJS/IngredientesCreateEdit.js"></script>
+        <script>
+            $( document ).ready(function() {
+                @if (Model != null)
+                {
+                    @foreach(var item in Model.Ingredientes){
+                        @:addIngrediente("@Html.Raw(item.Ingrediente.Name)"+" - "+"@item.Ingrediente.Provedor" ,@item.IngredienteId,@item.Percentage);
+                    }
+                    @: updatePogressBar();
+
+                    @: $("#idFormula").val(@Model.Id);
+                    @: $("#nameFormula").val("@Html.Raw(Model.Name)");
+                    @: $("#porcionesFormulacion").val(@Model.PorcionId);
+                    @if (Model.Densidad.HasValue){
+                        @: $("#inputDencidadFormulacion").val(@Model.Densidad);
+                    }
+                    @:changeDropDownFormulacion();
+                }
+            });
+        </script>
+
+
+    }

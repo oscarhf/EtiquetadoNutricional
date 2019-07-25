@@ -1,0 +1,41 @@
+﻿<Properties StartupConfiguration="{85458FE6-F390-4241-91F7-552721036094}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Etiquetas/appsettings.json">
+    <Files>
+      <File FileName="Etiquetas/Etiquetas.csproj" Line="1" Column="1" />
+      <File FileName="Etiquetas/Program.cs" Line="1" Column="1" />
+      <File FileName="Etiquetas/Data/ApplicationDbContext.cs" Line="1" Column="1" />
+      <File FileName="Etiquetas/Startup.cs" Line="1" Column="1" />
+      <File FileName="Etiquetas/appsettings.json" Line="1" Column="1" />
+      <File FileName="Etiquetas/appsettings.Development.json" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Etiquetas" expanded="True">
+            <Node name="Etiquetas" expanded="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="PackageDependencies" expanded="True" />
+              </Node>
+              <Node name="Areas" expanded="True">
+                <Node name="Identity" expanded="True">
+                  <Node name="Pages" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Data" expanded="True" />
+              <Node name="Migrations" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="appsettings.json" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Etiquetas PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>

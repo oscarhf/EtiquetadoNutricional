@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewData["Title"] = "Porciones";
+}
+
+@model List<Etiquetas.ViewModels.PorcionView>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h4 class="card-title ">Porciones</h4>
+
+                </div>
+                <div class="card-body">
+
+                    @if (Model.Count() > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table">
+
+                                <thead class=" text-primary">
+                                    <tr>
+
+                                        <th>
+                                            Nombre
+                                        </th>
+
+                                        <th>
+                                            Cantidad
+                                        </th>
+                                        
+
+
+                                        <th>
+                                            Acciones
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var categorias in Model)
+                                    {
+
+                                    <tr>
+
+                                        <th>
+                                            @categorias.name
+                                        </th>
+
+                                        <th>
+
+                                        </th>
+                                    </tr>
+
+
+                                        foreach(var item in categorias.Porciones){
+                                            
+                                            <tr>
+                                                <td>
+                                                    @item.Name
+                                                </td>
+
+                                                <td>
+                                                    @if(item.Cantidad.HasValue){
+                                                      @item.Cantidad @: @item.Unidad
+                                                    }else{
+                                                         @item.Annotation
+                                                    }
+
+                                                </td>
+
+                                                <td class="td-actions text-right">
+
+
+                                                    <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Editar" onclick="editPorcion(@item.Id);">
+                                                        <i class="material-icons">edit</i>
+                                                    </button>
+
+
+
+
+
+                                                </td>
+
+
+                                            </tr>
+
+                                        }
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>
+                            existen Prociones, puede agregarlas dando click al boton Agregar,
+                            recuerde que si no son porciones de ley no estaran disponibles para todos los usuarios de la plataforma
+                        </p>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="Modal-Create-Porcion-Admin-Porcion" class="modal fade">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>Crear Porcion</div>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="Modal-Create-Porcion-Admin-Form-Porcion">
+                    <div class="row align-items-center">
+
+                        <div class="col-12">
+                            **El valor de esta porcion Estara Disponible para todos los usuarios del sistema
+                        </div>
+
+                        <div class="col-12">
+                            <br />
+                        </div>
+
+                        <input id="idPorcion" type="hidden" name="id">
+
+
+                        <div class="col-5 labelcustom">
+                            Nombre
+                        </div>
+
+                        <input id="Modal-Create-Admin-User-Name-Porcion" class="col-6 inputCustom" name="name" required>
+
+
+                        <div class="col-5 labelcustom">
+                            Categoria
+                        </div>
+
+                        <input id="Modal-Create-Porcion-Admin-Category-Porcion" class="col-6 inputCustom" name="Category" list="categoriaList" required>
+                        <datalist id="categoriaList">
+                            @foreach (var categorias in Model)
+                            {
+                                <option value="@categorias.name" selected>@categorias.name</option>
+
+                            }
+
+                        </datalist>
+
+                        <div class="col-5 labelcustom">
+                            Valor Requerido
+                        </div>
+
+                        <select id="Modal-Create-Requedido-Admin-Porcion" class="col-6 custom-select" name="requerido" onchange="changeTipoValor();">
+
+                            <option value="noRequerido" selected>No requiere valor usuario</option>
+                            <option value="Requerido">Requerido valor usuario</option>
+
+                        </select>
+
+
+                        <div id="Modal-Create-Porcion-Admin-Cantidad-Porcion-input" class="col-5 labelcustom">Valor</div>
+                        <input id="Modal-Create-Porcion-Admin-Cantidad-Porcion" class="col-3 inputCustom" name="Cantidad" type="number" min="0" step="0.1" required>
+                        <select id="Modal-Create-Porcion-Admin-Unidad-Porcion" class="col-3 custom-select" name="Unidad">
+                            <option value="g" selected>g - Gramos</option>
+                            <option value="ml">ml - Mililitros</option>
+                            <option value="taza">Taza</option>
+                            <option value="vaso">Vaso</option>
+                            <option value="cda">cda - Cucharada</option>
+                            <option value="cdta">Cdta - Cucharadira</option>
+                            <option value="Oz">Onza</option>
+                            <option value="OzFl">Onza Fluida</option>
+
+                        </select>
+
+
+                        <div id="Modal-Create-Porcion-Admin-Anotacion-Porcion-Input" class="d-none labelcustom">Anotacion</div>
+                        <input id="Modal-Create-Porcion-Admin-Anotacion-Porcion" class="d-none inputCustom" name="Annotation" type="text">
+
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" onclick="savePorcion();">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+
+   <script src="~/js/EtiquetasJS/PorcionesCreateEdit.js"></script>
+
+    <script>function getEtiqueta(data) {
+            window.location.href = "/etiqueta?id=" + data;
+        }</script>
+
+
+     $(document).ready(function () {
+            $('#Modal-Create-Porcion-Admin-Categoria').editableSelect();
+
+        });
+
+}
+
+@section ScriptsHead{
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+}
+
+@section navelements{
+    <li class="nav-item">
+        <a class="nav-link"  onclick="newPorcion()" >
+            <i class="material-icons">add</i>
+            Agregar porción
+        </a>
+    </li>
+}

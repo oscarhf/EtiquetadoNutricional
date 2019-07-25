@@ -1,0 +1,846 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+
+@model Etiquetas.Models.Etiqueta;
+@{
+    ViewData["Title"] = "Etiqueta nutricional - " + Model.Name;
+}
+
+<div class="row">
+    <div class="col-5" >
+        <div class="card alimentoscard" >
+            <div class="card-body" id="simplificado">
+                <div class="row alimentos">
+                    <div class="col-12 text-center ">
+                        <b>Información Nutricional</b>
+                    </div>
+                </div>
+                <div class="row alimentos">
+                    <div class="col-8">
+                        Tamaño por porción
+                    </div>
+                    <div class="col-2">
+                        @Model.Porcion
+                    </div>
+                    <div class="col-2">
+                        
+                    </div>
+
+                    <div class="col-8">
+                        Porciones por envase
+                    </div>
+                    <div class="col-2">
+                        @Model.PorcionesNumero
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+
+                </div>
+
+                <div class="row alimentos">
+                    <div class="col-12">
+                        <b>Cantidad por porción</b>
+                    </div>
+
+                </div>
+
+
+                <div class="row alimentos">
+                    <div class="col-8">
+                        <b>Calorias</b>
+                    </div>
+                    <div class="col-2">
+                       @Model.CaloriasS 
+
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+
+                    <div class="col-8">
+                        Calorías de grasa
+                    </div>
+                    <div class="col-2">
+                        @Model.CaloriasGrasa
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                </div>
+
+                <div class="row alimentos">
+                    <div class="col-8">
+
+                    </div>
+                    <div class="col-4">
+                        <b>* Valor Diario</b>
+                    </div>
+
+
+
+                    <div class="col-8">
+                        <b>Grasa Total</b> (@Model.GrasaS g)
+                    </div>
+                    <div class="col-2">
+                        @Model.GrasaP%
+                    </div>
+                    <div class="col-2">
+
+
+
+                    </div>
+
+                    <div class="col-8 sub">
+                        Grasa Saturada (@Model.GrasaSaturadaS g)
+                    </div>
+                    <div class="col-2">
+                        @Model.GrasaSaturadaP%
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                    <div class="col-8 sub">
+                        Grasa Trans (@Model.GrasaTransS g)
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+                    <div class="col-2">
+                        
+                    </div>
+
+
+                    <div class="col-8">
+                        <b>Colesterol</b> (@Model.ColesterolS mg)
+                    </div>
+                    <div class="col-2">
+                        @Model.ColesterolP%
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                    <div class="col-8">
+                        <b>Sodio</b> (@Model.SodioS mg)
+                    </div>
+                    <div class="col-2">
+                        @Model.SodioP%
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                    <div class="col-8">
+                        <b>Carbohidrato Total</b> (@Model.CarbohidratosS g)
+                    </div>
+                    <div class="col-2">
+                        @Model.CarbohidratosP%
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                    <div class="col-8 sub">
+                        Fibra (@Model.FibraDieteticaS g)
+                    </div>
+                    <div class="col-2">
+                        @Model.FibraDieteticaS%
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                    <div class="col-8 sub">
+                        Azucares (@Model.AzucarS g)
+                    </div>
+                    <div class="col-2">
+                        
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                    <div class="col-8">
+                        <b>Proteinas</b> (@Model.ProteinasS g)
+                    </div>
+                    <div class="col-2">
+                        @Model.ProteinasP%
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+
+                </div>
+
+               @if (ViewBag.bloque4){
+                    <div class="row alimentos">
+                   @if (Model.Va)
+                    {
+                        <div class="col-4">
+                            Vitamina A
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.VaP == null){
+                              @: 0%
+                          }else{
+                              @Model.VaP@:%
+                          }
+
+                        </div>
+                    }
+
+                   @if (Model.Vb1)
+                    {
+                        <div class="col-4">
+                            Vitamina B1
+                        </div>
+
+                        <div class="col-2">
+                              @if (Model.Vb1P == null){
+                              @: 0%
+                          }else{
+                              @Model.Vb1P@:%
+                          }
+
+                         
+
+                        </div>
+                    }
+
+                   @if (Model.Vb2)
+                    {
+                        <div class="col-4">
+                            Vitamina B2
+                        </div>
+                        <div class="col-2">
+                          @if (Model.Vb2P == null){
+                              @: 0%
+                          }else{
+                              @Model.Vb2P@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Vb5)
+                    {
+                        <div class="col-4">
+                            Vitamina B5
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.Vb5P == null){
+                              @: 0%
+                          }else{
+                              @Model.Vb5P@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Vb7 )
+                    {
+                        <div class="col-4">
+                            Vitamina B7
+                        </div>
+                        <div class="col-2">
+                          @if (Model.Vb7P == null){
+                              @: 0%
+                          }else{
+                              @Model.Vb7P@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Vb9 )
+                    {
+                        <div class="col-4">
+                            Vitamina B9
+                        </div>
+                        <div class="col-2">
+                          @if (Model.Vb9P == null){
+                              @: 0%
+                          }else{
+                              @Model.Vb9P@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Vb12)
+                    {
+                        <div class="col-4">
+                            Vitamina B12
+                        </div>
+                        <div class="col-2">
+                          @if (Model.Vb12P == null){
+                              @: 0%
+                          }else{
+                              @Model.Vb12P@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Vc)
+                    {
+                        <div class="col-4">
+                            Vitamina C
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.VcP == null){
+                              @: 0%
+                          }else{
+                              @Model.VcP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Vd )
+                    {
+                        <div class="col-4">
+                            Vitamina D
+                        </div>
+                        <div class="col-2">
+                          @if (Model.VdP == null){
+                              @: 0%
+                          }else{
+                              @Model.VdP@:%
+                          }
+                        </div>
+                    }
+
+
+                   @if (Model.Ve )
+                    {
+                        <div class="col-4">
+                            Vitamina E
+                        </div>
+                        <div class="col-2">
+                          @if (Model.VeP == null){
+                              @: 0%
+                          }else{
+                              @Model.VeP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Vk)
+                    {
+                        <div class="col-4">
+                            Vitamina K
+                        </div>
+                        <div class="col-2">
+                          @if (Model.VkP == null){
+                              @: 0%
+                          }else{
+                              @Model.VkP@:%
+                          }
+                        </div>
+                    }
+
+
+                  @if (Model.Calcio)
+                    {
+                        <div class="col-4">
+                            Calcio
+                        </div>
+                        <div class="col-2">
+                           @if (Model.CalcioP == null){
+                              @: 0%
+                          }else{
+                              @Model.CalcioP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Cromo )
+                    {
+                        <div class="col-4">
+                            Cromo
+                        </div>
+
+                        <div class="col-2">
+                           @if (Model.CromoP == null){
+                              @: 0%
+                          }else{
+                              @Model.CromoP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Cobre )
+                    {
+                        <div class="col-4">
+                            Cobre
+                        </div>
+                        <div class="col-2">
+                         @if (Model.CobreP == null){
+                              @: 0%
+                          }else{
+                              @Model.CobreP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Fosforo)
+                    {
+                        <div class="col-4">
+                            Fosforo
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.FosforoP == null){
+                              @: 0%
+                          }else{
+                              @Model.FosforoP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Fluor )
+                    {
+                        <div class="col-4">
+                            Fluor
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.HierroP == null){
+                              @: 0%
+                          }else{
+                              @Model.HierroP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Hierro )
+                    {
+                        <div class="col-4">
+                            Hierro
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.HierroP == null){
+                              @: 0%
+                          }else{
+                              @Model.HierroP@:%
+                          }
+                        </div>
+                    }
+                    
+                   @if (Model.Magnesio)
+                    {
+                        <div class="col-4">
+                            Magnesio
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.MagnesioP == null){
+                              @: 0%
+                          }else{
+                              @Model.MagnesioP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Manganeso)
+                    {
+                        <div class="col-4">
+                            Manganeso
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.ManganesoP == null){
+                              @: 0%
+                          }else{
+                              @Model.ManganesoP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Molibdeno )
+                    {
+                        <div class="col-4">
+                            Molibdeno
+                        </div>
+
+                        <div class="col-2">
+                         @if (Model.MolibdenoP== null){
+                              @: 0%
+                          }else{
+                              @Model.MolibdenoP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Potasio )
+                    {
+                        <div class="col-4">
+                            Potasio
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.PotasioP == null){
+                              @: 0%
+                          }else{
+                              @Model.PotasioP@:%
+                          }
+                        </div>
+                    }
+
+                    @if (Model.Selenio )
+                    {
+                        <div class="col-4">
+                            Selenio
+                        </div>
+                        <div class="col-2">
+                          @if (Model.SelenioP == null){
+                              @: 0%
+                          }else{
+                              @Model.SelenioP@:%
+                          }
+                        </div>
+                    }
+                    
+
+                   @if (Model.Yodo )
+                    {
+                        <div class="col-4">
+                            Yodo
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.YodoP == null){
+                              @: 0%
+                          }else{
+                              @Model.YodoP@:%
+                          }
+                        </div>
+                    }
+
+                   @if (Model.Zinc)
+                    {
+                        <div class="col-4">
+                            Zinc
+                        </div>
+
+                        <div class="col-2">
+                          @if (Model.ZincP == null){
+                              @: 0%
+                          }else{
+                              @Model.ZincP@:%
+                          }
+                        </div>
+                    }
+
+                </div>
+                }
+                
+
+                <div class="row alimentos">
+                    <div class="col-12">
+                        * Los porcentajes de Valores Diarios están basados en una dieta de 2000 calorías
+                    </div>
+
+                </div>
+
+                <div class="row alimentosEnd">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-7">
+        @if (Model.isFormulacion)
+    {
+        <div class="card alimentoscard">
+            <div class="card-body">
+                <b>Ingredientes:</b> @Model.ingredientes
+            </div>
+        </div>
+}
+
+        <div class="card alimentoscard" id="semaforos">
+            <div class="card-body row text-center justify-content-center">
+                <div class="col-12"> aporta: </div>
+
+
+                <div class=" col-2 semaforo">
+                    <div class="semaforo-name">Calorias</div>
+                    <div class="semaforo-cantidad">@Model.CaloriasS</div>
+                    <div class="semaforo-porcentaje">@Model.CaloriasP%  </div>
+                </div>
+
+                <div class=" col-2 semaforo">
+                    <div class="semaforo-name">Sodio</div>
+                    <div class="semaforo-cantidad">@Model.SodioS mg</div>
+                    <div class="semaforo-porcentaje">@Model.SodioP%  </div>
+                </div>
+
+
+                <div class=" col-2 semaforo">
+                    <div class="semaforo-name">Azucar</div>
+                    <div class="semaforo-cantidad">@Model.AzucarS g</div>
+                    <div class="semaforo-porcentaje"> * </div>
+                </div>
+
+
+                <div class=" col-2 semaforo">
+                    <div class="semaforo-name">Grasa</div>
+                    <div class="semaforo-cantidad">@Model.GrasaS g</div>
+                    <div class="semaforo-porcentaje">@Model.GrasaP%  </div>
+                </div>
+
+                @if(Model.GrasaSaturadaS != null)
+                {
+                    <div class=" col-2 semaforo">
+                        <div class="semaforo-name">Grasa Saturada</div>
+                        <div class="semaforo-cantidad" style="padding-top: 0px;padding-bottom: 0px;">@Model.GrasaSaturadaS g</div>
+                        <div class="semaforo-porcentaje">@Model.GrasaSaturadaP%  </div>
+                    </div>
+                }
+                <div class="col-12"> de los valores diarios de referencia de nutrientes en una dieta de 2000 calorias <br /> * valor diario de refencia no establecido  </div>
+
+            </div>
+        </div>
+
+        <div class="card alimentoscard">
+            <div class="card-body row ">
+                <b>Información Nutricional</b> Porción: @Model.Porcion Cantidad/Porcion: Calorias: @Model.CaloriasS
+                ,Grasa Total @Model.GrasaS g (@Model.GrasaP%) Grasa Sat: @Model.GrasaSaturadaS g (@Model.GrasaSaturadaP%),
+                Grasa Trans: @Model.GrasaTransS g, Colesterol: @Model.ColesterolS mg (@Model.ColesterolP%), Sodio: @Model.SodioS mg (@Model.SodioP%),
+                Carb @Model.CarbohidratosS g (@Model.CarbohidratosP%), Fibra @Model.FibraDieteticaS g ( @Model.FibraDieteticaS%),
+                Azucares @Model.AzucarS g, Proteinas: @Model.ProteinasS g, 
+
+                @if(Model.Va){
+                    @:Vitamina A (@(Model.VaP !=null? Model.VaP.ToString() + "%" : "0%" )),
+                }    
+
+                 @if(Model.Vb1){
+                    @:Vitamina B1 (@(Model.Vb1P !=null? Model.Vb1P.ToString() + "%" : "0%" )),
+                }  
+
+                 @if(Model.Vb2){
+                    @:Vitamina B2 (@(Model.Vb2P !=null? Model.Vb2P.ToString() + "%" : "0%" )),
+                }  
+
+
+                 @if(Model.Vb3){
+                    @:Vitamina B3 (@(Model.Vb3P !=null? Model.Vb3P.ToString() + "%" : "0%" )),
+                }  
+
+                @if(Model.Vb5){
+                    @:Vitamina B5 (@(Model.Vb5P !=null? Model.Vb5P.ToString() + "%" : "0%" )),
+                }  
+
+                 @if(Model.Vb7){
+                    @:Vitamina B7 (@(Model.Vb7P !=null? Model.Vb7P.ToString() + "%" : "0%" )),
+                }  
+
+                @if(Model.Vb9){
+                    @:Vitamina B9 (@(Model.Vb9P !=null? Model.Vb9P.ToString() + "%" : "0%" )),
+                }  
+
+                @if(Model.Vb12){
+                    @:Vitamina B12 (@(Model.Vb12P !=null? Model.Vb12P.ToString() + "%" : "0%" )),
+                }  
+
+
+                @if(Model.Vc){
+                    @:Vitamina C (@(Model.VcP !=null? Model.VcP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Vd){
+                    @:Vitamina D (@(Model.VdP !=null? Model.VdP.ToString() + "%" : "0%" )),
+                } 
+                @if(Model.Ve){
+                    @:Vitamina E (@(Model.VeP !=null? Model.VeP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Vk){
+                    @:Vitamina K (@(Model.VkP !=null? Model.VkP.ToString() + "%" : "0%" )),
+                } 
+
+
+                 @if(Model.Calcio){
+                    @:Calcio (@(Model.CalcioP !=null? Model.CalcioP.ToString() + "%" : "0%" )),
+                } 
+
+                 @if(Model.Cromo){
+                    @:Cromo (@(Model.CromoP !=null? Model.CromoP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Cobre){
+                    @:Cobre (@(Model.CobreP !=null? Model.CobreP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Fosforo){
+                    @:Fosforo (@(Model.FosforoP !=null? Model.FosforoP.ToString() + "%" : "0%" )),
+                } 
+
+                 @if(Model.Fluor){
+                    @:Fosforo (@(Model.FluorP !=null? Model.FluorP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Hierro){
+                    @:Hierro (@(Model.HierroP !=null? Model.HierroP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Magnesio){
+                    @:Magnesio (@(Model.MagnesioP !=null? Model.MagnesioP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Manganeso){
+                    @:Manganeso (@(Model.ManganesoP !=null? Model.ManganesoP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Molibdeno){
+                    @:Molibdeno (@(Model.MolibdenoP !=null? Model.MolibdenoP.ToString() + "%" : "0%" )),
+                } 
+
+                @if(Model.Potasio){
+                    @:Potasio (@(Model.PotasioP !=null? Model.PotasioP.ToString() + "%" : "0%" )),
+                }
+
+                @if(Model.Selenio){
+                    @:Selenio (@(Model.SelenioP !=null? Model.SelenioP.ToString() + "%" : "0%" )),
+                }
+
+                @if(Model.Yodo){
+                    @:Yodo (@(Model.YodoP !=null? Model.YodoP.ToString() + "%" : "0%" )),
+                }
+
+
+                @if(Model.Zinc){
+                    @:Zinc (@(Model.ZincP !=null? Model.ZincP.ToString() + "%" : "0%" )),
+                }
+
+                Los porcentajes de Valores Diarios están basados en una dieta de 2000 calorías
+            </div>
+        </div>
+        
+
+    </div>
+    <div class="col-12">
+            <div class="card alimentoscard" style="margin-top: 0px;">
+                
+            </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-export" tabindex="-1" role="dialog" >
+   
+    <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row row-modal-title  align-items-center">
+                    <span class="col-1 labelcustom">Nombre</span>
+                    <input class="col-8 effect-9 inputCustom" name="name" type="text" required>
+
+                </div>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section ScriptsHead{
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+}
+
+
+@section Scripts{
+
+
+
+    <script>
+
+    function exportar() {
+
+            $("modal-export").modal("show");
+
+    }
+
+
+
+    function simplificado2png () {
+
+        html2canvas(document.querySelector('#simplificado')).then(function(canvas) {
+            saveAs(canvas.toDataURL(), 'file-name.png');
+        });
+    }
+
+
+    function semaforos2png () {
+
+        html2canvas(document.querySelector('#semaforos')).then(function(canvas) {
+        saveAs(canvas.toDataURL(), 'file-name.png');
+        });
+    }
+
+
+    function saveAs(uri, filename) {
+
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+
+            link.href = uri;
+            link.download = filename;
+
+            //Firefox requires the link to be in the body
+            document.body.appendChild(link);
+
+            //simulate click
+            link.click();
+
+            //remove the link when done
+            document.body.removeChild(link);
+
+        } else {
+
+            window.open(uri);
+
+        }
+    }
+
+
+
+
+    </script>
+
+
+
+
+
+
+}
+
+   @section navelements{
+        <li class="nav-item">
+            <a class="nav-link" onclick="exportar();">
+                <i class="material-icons">import_export</i>
+                Exportar
+
+            </a>
+        </li>
+    }

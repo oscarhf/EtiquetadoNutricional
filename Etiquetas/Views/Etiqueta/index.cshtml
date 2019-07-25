@@ -1,0 +1,272 @@
+﻿
+
+
+@{
+    ViewData["Title"] = "Eliga los elementos a mostrar";
+}
+
+@model Etiquetas.Models.Proximales;
+
+<div class="card card-chart" style="min-height: 208px;">
+
+    <div class="card-body">
+
+        <form id="data" action="/Etiqueta/get" method="get">
+
+            <input name="id" type="hidden" value=@Model.Id>
+
+            <div class="card card-chart">
+
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2" name="va" @(Model.Va != null ? "checked" : "") type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina A</span>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2" @(Model.Vb1 != null ? "checked" : "") name="vb1" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina B1</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+
+                                <input class="col-2" @(Model.Vb2 != null ? "checked" : "") name="vb2" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina B2</span>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2" @(Model.Vb3 != null ? "checked" : "") name="vb3" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina B3</span>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2" @(Model.Vb5 != null ? "checked" : "") name="vb5" type="checkbox" value="True">
+
+                                <span class="col-10 labelcustom">Vitamina B5</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Vb7 != null ? "checked" : "") name="vb7" type="checkbox" value="True">
+
+                                <span class="col-10 labelcustom">Vitamina B7</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Vb9 != null ? "checked" : "") name="vb9" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina B9</span>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Vb12 != null ? "checked" : "") name="vb12" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina B12</span>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Vc != null ? "checked" : "") name="vc" type="checkbox" value="True">
+
+                                <span class="col-10 labelcustom">Vitamina C</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Vd != null ? "checked" : "") name="vd" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina D</span>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Ve != null ? "checked" : "") name="ve" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina E</span>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Vk != null ? "checked" : "") name="vk" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Vitamina K</span>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-chart">
+
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-3">
+                            <div class="row">
+
+                                <input class="col-2  " @(Model.Calcio != null ? "checked" : "") name="calcio" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Calcio</span>
+
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row">
+
+                                <input class="col-2  " @(Model.Fosforo != null ? "checked" : "") name="fosforo" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Fosforo</span>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Fluor != null ? "checked" : "") name="fluor" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Fluor</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Hierro != null ? "checked" : "") name="hierro" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Hierro</span>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Yodo != null ? "checked" : "") name="yodo" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Yodo</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Zinc != null ? "checked" : "") name="zinc" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Zinc</span>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Potasio != null ? "checked" : "") name="potasio" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Potasio</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Magnesio != null ? "checked" : "") name="magnesio" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Magnesio</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Cobre != null ? "checked" : "") name="cobre" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Cobre</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2  " @(Model.Selenio != null ? "checked" : "") name="selenio" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Selenio</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2" @(Model.Cromo != null ? "checked" : "") name="cromo" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Cromo</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2" @(Model.Molibdeno != null ? "checked" : "") name="molibdeno" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Molibdeno</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="row">
+                                <input class="col-2" @(Model.Manganeso != null ? "checked" : "") name="manganeso" type="checkbox" value="True">
+                                <span class="col-10 labelcustom">Manganeso</span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="card-footer ">
+        <button type="submit" form="data" class="btn btn-success">
+            Generar
+        </button>
+    </div>
+</div>
+
+@section ScriptsHead{
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+}
+
+@section Scripts{
+
+    <script>$("input[type='checkbox']").on('change', function () {
+            $(this).val(this.checked ? "True" : "False");
+        });</script>
+
+}

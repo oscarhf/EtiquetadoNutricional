@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+@model  Etiquetas.Models.Proximales
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-chart" style="min-height: 208px;">
+            <div class="card-header card-header-success">
+                <div>
+                    Crear desde formulación
+                </div>
+            </div>
+            <div class="card-body">
+
+                <p class="card-category">
+                    Crea una etiqueta apartir de la formulación de un producto, puedes elegir los ingredientes a usar
+                </p>
+            </div>
+            <div class="card-footer justify-content-center ">
+                <a href="/Formulacion/Create" class="btn btn-success">
+                    Crear
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-chart" style="min-height: 208px;">
+            <div class="card-header card-header-warning">
+                <div>
+                    Crear desde análisis proximal
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-category">
+                    Crea una etiqueta apartir del análisis proximal de un producto
+                </p>
+            </div>
+            <div class="card-footer justify-content-center ">
+                <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#exampleModalCenter">
+                    Crear
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-chart" style="min-height: 208px;">
+            <div class="card-header card-header-danger">
+                <div>Mis formulaciones</div>
+            </div>
+            <div class="card-body">
+
+                <p class="card-category">
+                    Puesdes visualizar formulaciones o análisis proximales previamente guardados
+                </p>
+            </div>
+            <div class="card-footer justify-content-center ">
+                <a href="/Formulacion" class="btn btn-danger">
+                    Revisar
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+    @if (User.IsInRole("Admin"))
+    {
+<div class=" row justify-content-center" style="
+    padding-top: 20px;">
+    <div class="col-md-4">
+        <div class="card card-chart" style="min-height: 208px;">
+            <div class="card-header card-header-primary">
+                <div>Admin ingredientes</div>
+            </div>
+            <div class="card-body">
+
+                <p class="card-category">
+                    Permite crear/editar ingredientes para todos los usuarios de la plataforma
+                </p>
+            </div>
+            <div class="card-footer justify-content-center ">
+                <a href="/Ingredientes/all" class="btn btn-warning">
+                    Administar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-chart" style="min-height: 208px;">
+            <div class="card-header card-header-info">
+                <div>Admin porción</div>
+            </div>
+            <div class="card-body">
+
+                <p class="card-category">
+                    Permite crear/editar porciones de ley
+                </p>
+            </div>
+            <div class="card-footer justify-content-center ">
+                <a href="/Porcion/all" class="btn btn-info">
+                    Administrar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+    }
+
+
+
+@section ScriptsHead{
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+}
+
+
+@section Scripts{
+    <script>
+        $( document ).ready(function() {
+        @if (Model != null){
+
+        @: var data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)) ;
+        @: Object.keys(data).forEach(function eachKey(key) {
+        @:          if (data[key] != null) {
+        @:                 var input = $('#modalForm input[name = ' + key.toLowerCase() + ']');
+        @:                 if (input.size() >= 1) {
+        @:                     input.get(0).value = data[key];
+        @:                 }
+        @:         };
+        @:    });
+        @: document.getElementById("idProximal").value = @Model.Id;
+        @: document.getElementById("porcionesModal").value = @Model.PorcionId;
+        @: changeDropDown();
+        @: $('#exampleModalCenter').modal('show');
+        @: });
+        }
+    </script>
+}
+
+
